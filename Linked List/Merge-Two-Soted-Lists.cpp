@@ -52,36 +52,24 @@ class Solution
 public:
     ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
     {
-        ListNode* dummy = new ListNode(0);  // heap, not stack
-        ListNode* curr = dummy;
-        while (list1 != nullptr || list2 != nullptr)
-        {
-            if (list1 == nullptr)
-            {
-                curr->next = list2;
-                break;
-            }
-            else if (list2 == nullptr)
-            {
-                curr->next = list1;
-                break;
-            }
-            if (list1->val <= list2->val)
-            {
-                curr->next = list1;
-                list1 = list1->next;
-                curr = curr->next;
-            }
-            else
-            {
-                curr->next = list2;
-                list2 = list2->next;
-                curr = curr->next;
-            }
+       ListNode dummy(0);
+       ListNode* curr=&dummy;
+
+       while(list1 && list2){
+        if(list1->val<=list2->val){
+        curr->next=list1;
+        list1=list1->next;
         }
-        ListNode* result = dummy->next;
-        delete dummy;
-        return result;
+       
+       else{
+        curr->next=list2;
+        list2=list2->next;
+       }
+       curr=curr->next;
+
+    }
+    list1?curr->next=list1: curr->next=list2;
+        return dummy.next;
     }
 };
 
