@@ -21,36 +21,21 @@ struct TreeNode
 class Solution
 {
 public:
-    
-    int maxDepth(TreeNode *root)
+    int ans=0;
+    int depth(TreeNode *root)
     {
-        if (root)
-        {
-            return 1 + max(maxDepth(root->left), maxDepth(root->right));
-        }
-        else
-        {
-            return 0;
-        }
+       if(!root){
+        return 0;
+       }
+       int left = depth(root->left);
+       int right= depth(root->right);
+
+       ans=max(ans, left+right);
+       return 1 + max(left, right);
     }
     int diameterOfBinaryTree(TreeNode *root)
     {
-        if (root->left && root->right)
-        {
-            int best = max(diameterOfBinaryTree(root->left), diameterOfBinaryTree(root->right));
-            return max(maxDepth(root->left) + maxDepth(root->right), best);
-        }
-        else if (root->left)
-        {
-            return max(maxDepth(root) - 1, diameterOfBinaryTree(root->left));
-        }
-        else if (root->right)
-        {
-            return max(maxDepth(root) - 1, diameterOfBinaryTree(root->right));
-        }
-        else
-        {
-            return 0;
-        }
+        depth(root);
+        return ans;
     }
 };
