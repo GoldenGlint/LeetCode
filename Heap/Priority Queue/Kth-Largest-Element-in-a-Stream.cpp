@@ -20,32 +20,18 @@ public:
         this->k = k;
         for (int i = 0; i < nums.size(); i++)
         {
-            if (minHeap.size() < k)
-            {
-                minHeap.push(nums[i]);
-            }
-            else
-            {
-                if (nums[i] > minHeap.top())
-                {
-                    minHeap.pop();
-                    minHeap.push(nums[i]);
-                }
-            }
+            add(nums[i]);
         }
     }
 
     int add(int val)
     {
-        if (minHeap.size() < this->k)
-        {
-            minHeap.push(val);
-        }
-        else if (val > minHeap.top())
+        minHeap.push(val);
+        if (minHeap.size() > this->k)
         {
             minHeap.pop();
-            minHeap.push(val);
         }
+
         return minHeap.top();
     }
 };
