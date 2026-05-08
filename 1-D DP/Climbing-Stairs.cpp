@@ -16,13 +16,14 @@ public:
             return n;
         }
         vector<int> nums;
-        nums.push_back(1);
-        nums.push_back(2);
+        int prev2=1, prev1=2;
         for (int i = 2; i < n; i++)
         {
-            nums.push_back(nums[i - 2] + nums[i - 1]);
+           int curr=prev1+prev2;
+           prev2=prev1;
+           prev1=curr;
         }
-        return nums[n - 1];
+        return prev1;
     }
 };
 
