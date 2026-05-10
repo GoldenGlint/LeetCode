@@ -11,32 +11,15 @@ class Solution
 public:
     vector<int> plusOne(vector<int> &digits)
     {
-        if (digits[digits.size() - 1] != 9)
-        {
-            digits[digits.size() - 1]++;
-            return digits;
-        }
         for (int i = digits.size() - 1; i >= 0; i--)
         {
-            if (digits[i] == 9)
-            {
-                if (i == 0)
-                {
-                    digits[i]=0;
-                    digits.insert(digits.begin(), 1);
-                    return digits;
-                }
-                else
-                {
-                    digits[i] = 0;
-                }
-            }
-            else
-            {
+            if(digits[i]!=9){
                 digits[i]++;
                 return digits;
             }
+            digits[i]=0;
         }
+        digits.insert(digits.begin(), 1);
         return digits;
     }
 };
@@ -44,10 +27,11 @@ public:
 void printV(vector<int> v)
 {
     cout << "[";
-    for (int i = 0; i < v.size(); i++)
+    for (int i = 0; i < v.size()-1; i++)
     {
         cout << v[i] << ",";
     }
+    cout<<v[v.size()-1];
     cout << "]" << endl;
 }
 
