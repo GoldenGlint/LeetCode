@@ -6,45 +6,26 @@
 
 using namespace std;
 
-class Solution
-{
+class Solution {
 public:
-    vector<int> plusOne(vector<int> &digits)
-    {
-        for (int i = digits.size() - 1; i >= 0; i--)
-        {
-            if(digits[i]!=9){
-                digits[i]++;
-                return digits;
+    bool isHappy(int n) {
+        while(n!=1&&n!=4){
+            int sum=0;
+            while(n>0){
+                int d=n%10;
+                sum+=d*d;
+                n=n/10;
             }
-            digits[i]=0;
+            n=sum;
+
         }
-        digits.insert(digits.begin(), 1);
-        return digits;
+        return n==1;
+        
     }
 };
-
-void printV(vector<int> v)
-{
-    cout << "[";
-    for (int i = 0; i < v.size()-1; i++)
-    {
-        cout << v[i] << ",";
-    }
-    cout<<v[v.size()-1];
-    cout << "]" << endl;
-}
-
 int main()
 {
     Solution sol;
-    vector<int> v1 = {1, 2, 3};
-    vector<int> v2 = {4, 3, 2, 1, 9};
-    vector<int> v3 = {9, 9, 9, 9, 9};
-    vector<int> s1 = sol.plusOne(v1);
-    vector<int> s2 = sol.plusOne(v2);
-    vector<int> s3 = sol.plusOne(v3);
-    printV(s1);
-    printV(s2);
-    printV(s3);
+    cout<<sol.isHappy(19)<<endl;
+    cout<<sol.isHappy(2)<<endl;
 }
