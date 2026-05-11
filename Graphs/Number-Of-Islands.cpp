@@ -15,11 +15,12 @@ public:
     int numIslands(vector<vector<char>>& grid) {
         vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size(), false));
         int island=0;
+        vector<pair<int,int>> dirs = {{-1,0},{1,0},{0,-1},{0,1}};
         for(int i=0; i<grid.size(); i++){
             for(int l=0; l<grid[0].size(); l++){
                 if(grid[i][l]=='1'&&visited[i][l]==0){
                     island++;
-                    vector<pair<int,int>> dirs = {{-1,0},{1,0},{0,-1},{0,1}};
+                    
                     queue <pair<int, int>> q;
                     q.push({i, l});
                     visited[i][l]=true;
@@ -38,7 +39,7 @@ public:
                         }
                     }
                 }
-                visited[i][l]=true;
+                
                 
             }
         }
