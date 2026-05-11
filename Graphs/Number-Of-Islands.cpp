@@ -13,38 +13,30 @@ using namespace std;
 class Solution {
 public:
     int numIslands(vector<vector<char>>& grid) {
-        vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size(), false));
-        int island=0;
-        vector<pair<int,int>> dirs = {{-1,0},{1,0},{0,-1},{0,1}};
-        for(int i=0; i<grid.size(); i++){
-            for(int l=0; l<grid[0].size(); l++){
-                if(grid[i][l]=='1'&&visited[i][l]==0){
-                    island++;
-                    
-                    queue <pair<int, int>> q;
-                    q.push({i, l});
-                    visited[i][l]=true;
-                    while(!q.empty()){
-                        auto [row, col] = q.front();
-                        q.pop();
-                        for(auto [dr, dc]: dirs){
-                           int nrow=row+dr;
-                           int ncol=col+dc;
-                            if(nrow>=0&&ncol>=0&&nrow<grid.size()&&ncol<grid[0].size()){
-                                if(grid[nrow][ncol]=='1'&&visited[nrow][ncol]==false){
-                                    q.push(make_pair(nrow, ncol));
-                                    visited[nrow][ncol]=true;
-                                }
+        int rows = grid.size(), cols = grid[0].size(), count = 0;
+        int dirs[4][2] = {{1,0},{-1,0},{0,1},{0,-1}};
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == '1') {
+                    count++;
+                    queue<pair<int,int>> q;
+                    q.push({r, c});
+                    grid[r][c] = '0';
+                    while (!q.empty()) {
+                        auto [row, col] = q.front(); q.pop();
+                        for (auto& d : dirs) {
+                            int nr = row + d[0], nc = col + d[1];
+                            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == '1') {
+                                grid[nr][nc] = '0';
+                                q.push({nr, nc});
                             }
                         }
                     }
                 }
-                
-                
             }
         }
-        return island;
-        
+        return count;
     }
 };
 
