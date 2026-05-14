@@ -18,18 +18,20 @@ public:
             freq[num]++;
         }
 
-        vector<pair<int, int>> myVec(freq.begin(), freq.end());
-
-        sort(myVec.begin(), myVec.end(), [](pair<int, int> a, pair<int, int> b)
-             { return a.second > b.second; });
-
+        vector<vector<int>> bucket(nums.size() + 1);
+        for (auto &[num, count] : freq)
+        {
+            bucket[count].push_back(num);
+        }
         vector<int> ans;
 
-        for (int i = 0; i < k; i++)
+        for (int i = bucket.size() - 1; i >= 0 && ans.size() < k; i--)
         {
-            ans.push_back(myVec[i].first);
+            for (int num : bucket[i])
+            {
+                ans.push_back(num);
+            }
         }
-
         return ans;
     }
 };
