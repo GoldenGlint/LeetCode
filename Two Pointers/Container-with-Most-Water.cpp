@@ -15,28 +15,30 @@ public:
         int fHeight=height[0];
         int sHeight=height[ending];
         int mArea=min(fHeight, sHeight)*width;
-
         while(start<ending){
             //calc whether new first height is larger
-            fHeight=max(fHeight, height[start+1]);
-            int h=min(fHeight,sHeight); //which one to use
-            mArea=max(mArea, (width-1)*h);//new width is -1
-            
-            sHeight=max(sHeight, height[ending-1]);
-            h=min(fHeight,sHeight);
-            mArea=max(mArea, (width-1)*h);
-            
-            start++;
-            ending--;
-            width=width-2;
+            fHeight=max(fHeight, height[start]);
+            sHeight=max(sHeight, height[ending]);
+            mArea=max(min(fHeight, sHeight)*width,mArea);
+            if(fHeight<=sHeight){
+                start++;
+            }
+            else{
+                ending--;
+            }
+
+            width--;
+
+           
 
         }
- 
+       
         return mArea;
 
         
     }
 };
+
 int main(){
     Solution sol;
     vector<int> h={1,8,6,2,5,4,8,3,7};
