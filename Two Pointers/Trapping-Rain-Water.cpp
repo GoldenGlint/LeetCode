@@ -16,6 +16,9 @@ public:
         int maxLeft=0;
         int maxRight=0;
         while(left<right){
+            cout << "l=" << left << " r=" << right 
+         << " ml=" << maxLeft << " mr=" << maxRight 
+         << " w=" << water << endl;
             if(height[left]<height[right]){
                 if(height[left]>=maxLeft){
                     maxLeft=height[left];
