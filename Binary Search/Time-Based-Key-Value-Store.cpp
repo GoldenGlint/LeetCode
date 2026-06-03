@@ -7,7 +7,7 @@
 #include <map>
 
 using namespace std;
-
+//remember the edge cases
 class TimeMap {
 public:
     map<string, vector<pair<int, string>>> m;
