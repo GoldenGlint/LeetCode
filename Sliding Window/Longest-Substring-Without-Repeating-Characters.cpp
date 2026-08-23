@@ -9,37 +9,20 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        int right=0;
+        unordered_set <char> seen;
+        int result=0;
         int left=0;
-
-        if(s.length()==0){
-            return 0;
-        }
-
-        int result=1;
-        unordered_map <int,int> counter;
-        counter[s[0]]=1;
-
-        while(left!=s.length()-1){
-            if(left+1<s.length()&&right+1<s.length()){
-                if(counter[s[right+1]]==0){
-                    right++;
-                    counter[s[right]]++;
-                }
-                else{
-                    counter[s[left]]--;
-                    left++;
-                }
-            }
-            else{
+        for(int right=0; right<s.length(); right++){
+            while(seen.count(s[right])){
+                seen.erase(s[left]);
                 left++;
             }
-
+            seen.insert(s[right]);
             result=max(result, right-left+1);
         }
 
         return result;
-        
+
     }
 };
 
