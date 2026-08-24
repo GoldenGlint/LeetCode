@@ -31,13 +31,20 @@ public:
 };
 
 
+void printLoop(vector<int> v){
+    for(int i=0; i<v.size(); i++){
+        cout<<v[i]<<" ";
+    }
+    cout<<endl;
+}
+
 int main()
 {
 
 
     Solution sol;
     vector<int> nums={1,3,-1,-3,5,3,6,7};
-    cout<<sol.maxSlidingWindow(nums,3)<<endl;
+    printLoop(sol.maxSlidingWindow(nums,3));
 
 
 }
