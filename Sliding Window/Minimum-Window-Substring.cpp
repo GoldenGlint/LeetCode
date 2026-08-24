@@ -9,56 +9,63 @@ using namespace std;
 class Solution {
 public:
     string minWindow(string s, string t) {
-        int bestLeft = 0;
-        int bestLength = INT_MAX;
-        string ans="";
+        
         if(s.length()<t.length()){
             return "";
         }
 
-        vector<int> counter(129, 0);
+        vector<int> need(128, 0);
 
-        for(int i=0; i<t.size(); i++){
-            counter[t[i]-'A']++;
+        for (char c : t) {
+            need[c]++;
         }
         
-        int left=0;   
-        bool valid = true;
+        int missing = t.length();
 
-        for(int right=0; right<s.length(); right++){
+        int left = 0;
 
-            valid=true;
-            counter[s[right]-'A']--;
+        int bestLeft = 0;
+        int bestLength = INT_MAX;
 
-            for (int x : counter) {
-                if (x > 0) {
-                    valid = false;
-                    break;
-                }
+  for (int right = 0; right < s.length(); right++) {
+
+            // If we actually needed this character,
+            // we have satisfied one requirement
+            if (need[s[right]] > 0) {
+                missing--;
             }
-               
-                while(valid){
-                        int currentLength = right - left + 1;
 
-                        if (currentLength < bestLength) {
-                            bestLength = currentLength;
-                            bestLeft = left;
-                        }
-                        counter[s[left]-'A']++;
-                        left++;
-                        if(counter[s[left-1]-'A']>0){
-                            valid=false;
-                        }
-                                            
+            // Add s[right] to the window
+            need[s[right]]--;
+
+            // Window contains everything we need
+            while (missing == 0) {
+
+                int currentLength = right - left + 1;
+
+                if (currentLength < bestLength) {
+                    bestLength = currentLength;
+                    bestLeft = left;
                 }
-            
+
+                // Remove s[left] from the window
+                need[s[left]]++;
+
+                // If it becomes > 0, we are now missing
+                // this character again
+                if (need[s[left]] > 0) {
+                    missing++;
+                }
+
+                left++;
+            }
         }
 
-            if (bestLength == INT_MAX) {
-                return "";
-            }
+             if (bestLength == INT_MAX) {
+            return "";
+        }
 
-            return s.substr(bestLeft, bestLength);
+        return s.substr(bestLeft, bestLength);
 
     }
 };
