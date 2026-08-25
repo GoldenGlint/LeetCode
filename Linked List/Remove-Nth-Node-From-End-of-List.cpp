@@ -44,36 +44,25 @@ void printList(ListNode *head)
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        ListNode*currNode=head;
-        int counter=0;
-        while(currNode){
-            currNode=currNode->next;
-            counter++;
-        }
-        
+        ListNode dummy(0);
+        dummy.next=head;
+        ListNode*slow=&dummy;
+        ListNode*fast=&dummy;
 
-        int target=counter-n;
-        currNode=head;
-        int ncounter=0;
-        ListNode*prev=nullptr;
-        while(currNode){
-            if(ncounter==target){
-                if(prev==nullptr){
-                    head=head->next;
-                    return head;
-                }
-                else{
-                    prev->next=currNode->next;
-                    return head;
-                }
-            }
-            prev=currNode;
-            currNode=currNode->next;
-            ncounter++;
+        for(int i=0; i<=n; i++){
+            fast=fast->next;
         }
 
-        
-        return head;
+        while(fast){
+            fast=fast->next;
+            slow=slow->next;
+        }
+
+        slow->next=slow->next->next;
+
+        return dummy.next;
+
+
     }
 };
 
