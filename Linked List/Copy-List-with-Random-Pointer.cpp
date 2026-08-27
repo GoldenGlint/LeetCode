@@ -30,21 +30,35 @@ public:
             return nullptr;
         }
         Node*curr=head;
-        unordered_map<Node*, Node*> copies;
-
+        
         while(curr){
-            copies[curr]=new Node(curr->val);
-            curr=curr->next;
+            Node *copy=new Node(curr->val);
+            copy->next=curr->next;
+            curr->next=copy;
+            curr=copy->next;
         }
-
         curr=head;
 
         while(curr){
-            copies[curr]->next=copies[curr->next];
-            copies[curr]->random=copies[curr->random];
+            if (curr->random) {
+                curr->next->random = curr->random->next;
+            }
+            curr=curr->next->next;
+        }
+
+        curr=head;
+        Node*copyHead=head->next;
+
+        while(curr){
+            Node* copy=curr->next;
+            curr->next=copy->next;
+            if(copy->next){
+                copy->next=copy->next->next;
+            }
             curr=curr->next;
         }
-        return copies[head];
+
+        return copyHead;
     }
 };
 
