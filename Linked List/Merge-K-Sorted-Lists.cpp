@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <algorithm>
+#include <queue>
 
 #include <cassert>
 using namespace std;
@@ -45,38 +46,40 @@ void printList(ListNode* head) {
     cout << endl;
 }
 
-bool checkCond(vector<ListNode*>& lists){
-            bool res=false;
-            for(int i=0; i<lists.size(); i++){
-                if(lists[i]){
-                    return true;
-                }
-            }
-            return res;
-        };
+
 
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
+
+        struct Compare{
+            bool operator()(ListNode*a, ListNode*b){
+                return a->val > b->val;
+            }
+        };
+
+        priority_queue<ListNode*, vector<ListNode*>, Compare> pq;
         
+        for(ListNode* node : lists){
+            if(node){
+                pq.push(node);
+            }
+        }
+
         ListNode* dummy=new ListNode(0);
         ListNode* currNode=dummy;
-        while(checkCond(lists)){
-            pair<int, int>min={INT_MAX, -1};
-            for(int i=0; i<lists.size(); i++){
-                
-                if(!lists[i]){
-                    continue;
-                }
-                if(lists[i]->val<min.first){
-                    min={lists[i]->val, i};
+        
 
-                }
-            }
-            currNode->next=lists[min.second];
-            lists[min.second]=lists[min.second]->next;
+        while(!pq.empty()){
+            ListNode* smallest=pq.top();
+            pq.pop();
+            currNode->next=smallest;
             currNode=currNode->next;
+            if(smallest->next){
+                pq.push(smallest->next);
+            }
         }
+
         return dummy->next;
     }
 };
