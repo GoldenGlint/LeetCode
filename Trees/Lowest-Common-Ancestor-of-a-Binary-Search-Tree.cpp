@@ -32,38 +32,19 @@ public:
 
     }
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if(q->val<p->val){
-            swap(q, p);
-            
-        }
-        
-        while(true){
-            if(root==p){
-                return p;
-            }
-            else if(root==q){
-                return q;
-            }
-            else if(root->left&&root->right){
-                if(p->val<root->val&&q->val>root->val){
-                    return root;
-                }
-                else if(p->val<root->val&&q->val<root->val){
-                    root=root->left;
-                }
-                else{
-                    root=root->right;
-                }
-            }
-            else if(root->left){
+        while(root){
+            if(p->val < root->val && q->val < root->val){
                 root=root->left;
             }
-            else{
+            else if(p->val > root->val && q->val > root->val){
                 root=root->right;
+            }
+            else{
+                return root;
             }
         }
 
-        return root;
+        return nullptr;
     }
 };
 
