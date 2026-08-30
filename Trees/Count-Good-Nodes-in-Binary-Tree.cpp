@@ -28,46 +28,37 @@ void printQueue(queue<TreeNode*> q) {
     std::cout << "\n";
 }
 
-class Solution {
-    int counter=0;
+class Solution {   
 public:
-    int maxNumber(TreeNode* root, int num){
-        if(!root){
-            return -1;
-        }
-        if(root->val>=num){
-            counter++;
-            return root->val;
-        }
-        return num;
-
-    }
     int goodNodes(TreeNode* root) {
-        counter=0;
-        queue<pair<TreeNode*, int>> q;
         if(!root){
             return 0;
         }
+
+        int counter=0;
+
+        queue<pair<TreeNode*, int>> q;
         q.push({root, INT_MIN});
+
         while(!q.empty()){
-            
-            int qSize=q.size();
-            for(int i=0; i<qSize; i++){
-                TreeNode* curr=q.front().first;
-                int temp=q.front().second;
-                q.pop();
-                int result=maxNumber(curr, temp);
-                
-                if(curr->left){
-                    q.push({curr->left, result});
-                }
-                if(curr->right){
-                    q.push({curr->right, result});
-                }
+            TreeNode *curr=q.front().first;
+            int maxSoFar=q.front().second;
+            q.pop();
+
+            if(curr->val>=maxSoFar){
+                counter++;
+            }
+
+            int newMax=max(maxSoFar, curr->val);
+
+            if(curr->left){
+                q.push({curr->left, newMax});
+            }
+            if(curr->right){
+                q.push({curr->right, newMax});
             }
         }
         return counter;
-        
     }
 };
 
