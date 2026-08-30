@@ -37,35 +37,25 @@ public:
         
         queue <TreeNode *> q;
         q.push(root);
-        int counter=0;
-        int prevtarget=1;
-        int newtarget=0;
+        
         vector<int> level;
         while(!q.empty()){
-            printQueue(q);
-            if(counter==prevtarget){
-                ans.push_back(level);
-                level={};
-                prevtarget=newtarget;
-                newtarget=0;
-                counter=0;
-            }
-            else{
-                TreeNode* curr=q.front();
+            vector<int> level;
+            int qSize=q.size();
+            for(int i=0; i<qSize; i++){
+                TreeNode* temp=q.front();
+                level.push_back(temp->val);
                 q.pop();
-                counter++;
-                level.push_back(curr->val);
-                if(curr->left){
-                    q.push(curr->left);
-                    newtarget++;
+                if(temp->left){
+                    q.push(temp->left);
                 }
-                if(curr->right){
-                    q.push(curr->right);
-                    newtarget++;
+                if(temp->right){
+                    q.push(temp->right);
                 }
             }
+            ans.push_back(level);
         }
-        ans.push_back(level);
+        
         return ans;
     }
 };
