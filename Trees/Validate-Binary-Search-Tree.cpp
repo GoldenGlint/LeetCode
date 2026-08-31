@@ -21,42 +21,13 @@ struct TreeNode
 class Solution {
 public:
     bool wrapper(TreeNode* root, long long minn, long long maxx){
-         if(root==nullptr){
+        if(!root){
             return true;
         }
-        if(root->left&&root->right){
-            if(root->right->val<=root->val||root->left->val>=root->val){
-                return false;
-            }
-            if(root->right->val>=maxx){
-                return false;
-            }
-            if(root->left->val<=minn){
-                return false;
-            }
-            return wrapper(root->left, minn, root->val)&&wrapper(root->right, root->val, maxx);
+        if(root->val>=maxx||root->val<=minn){
+            return false;
         }
-        else if(root->right){
-            if(root->right->val<=root->val){
-                return false;
-            }
-            if(root->right->val>=maxx){
-                return false;
-            }
-            return wrapper(root->right, root->val, maxx);
-        }
-        else if(root->left){
-            if(root->left->val>=root->val){
-                return false;
-            }
-            if(root->left->val<=minn){
-                return false;
-            }
-            return wrapper(root->left, minn, root->val);
-        }
-        else{
-            return true;
-        }
+        return wrapper(root->left, minn, root->val) && wrapper(root->right, root->val, maxx);
     }
     bool isValidBST(TreeNode* root) {
        return wrapper(root, LLONG_MIN, LLONG_MAX);
