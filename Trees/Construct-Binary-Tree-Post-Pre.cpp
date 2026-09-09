@@ -41,36 +41,23 @@ void printQueue(queue<TreeNode*> q) {
  */
 class Solution {
 public:
-    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-
-        if(preorder.empty()||inorder.empty()){
+    unordered_map<int, int> index;
+    int preOrder=0;
+    TreeNode* build(vector<int> &preorder, int left, int right){
+        if(left>right){
             return nullptr;
         }
-
-        int target=preorder[0];
-        TreeNode* root=new TreeNode(target);
-        
-        preorder.erase(preorder.begin());
-        vector<int> left;
-        vector<int> right;
-        bool found=false;
-
-        for(int i=0; i<inorder.size(); i++){
-            if(target==inorder[i]){
-                found=true;
-            }
-            else if(found){
-                right.push_back(inorder[i]);
-            }
-            else{
-                left.push_back(inorder[i]);
-            }
-        }
-
-        root->left=buildTree(preorder, left);
-        root->right=buildTree(preorder, right);
-
+        int middle=index[preorder[preOrder]];
+        TreeNode*root=new TreeNode(preorder[preOrder++]);
+        root->left=build(preorder, left, middle-1);
+        root->right=build(preorder, middle+1, right);
         return root;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        for(int i=0; i<inorder.size(); i++){
+            index[inorder[i]]=i;
+        }
+        return build(preorder, 0, preorder.size()-1);
     }
 };
 
