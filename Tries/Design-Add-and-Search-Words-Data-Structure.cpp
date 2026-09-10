@@ -11,10 +11,15 @@ using namespace std;
 class trieNode{
     public:
 
-    bool isWord=false;
-    unordered_map<char, trieNode*> children;
-    trieNode(){
-        this->isWord=false;
+    bool isWord;
+    trieNode* children[26];
+
+    trieNode() {
+        isWord = false;
+
+        for (int i = 0; i < 26; i++) {
+            children[i] = nullptr;
+        }
     }
 };
 
@@ -26,49 +31,59 @@ public:
         root=new trieNode();
     }
     
-    void addWord(string word) {
-        trieNode *curr=root;
-        for(char c : word){
-            if(curr->children.find(c)!=curr->children.end()){
-                curr=curr->children[c];
+    
+     void addWord(string word) {
+        trieNode* curr = root;
+
+        for (char c : word) {
+            int index = c - 'a';
+
+            if (curr->children[index] == nullptr) {
+                curr->children[index] = new trieNode();
             }
-            else{
-                curr->children[c]=new trieNode();
-                curr=curr->children[c];
-            }
-            
+
+            curr = curr->children[index];
         }
-        curr->isWord=true;
+
+        curr->isWord = true;
     }
     
-    bool searchHelper(string word, trieNode* root){
-        trieNode *curr=root;
-        int index=0;
-        for(char c : word){
-            if(c=='.'){
-                for (const auto& [c, root] : curr->children) {
-                    if(searchHelper(word.substr(1+index), curr->children[c])){
+   bool searchHelper(const string& word, int index, trieNode* curr) {
+        if (index == word.size()) {
+            return curr->isWord;
+        }
+
+        char c = word[index];
+
+        if (c == '.') {
+
+            for (int i = 0; i < 26; i++) {
+                if (curr->children[i] != nullptr) {
+
+                    if (searchHelper(word, index + 1, curr->children[i])) {
                         return true;
                     }
                 }
-                return false;
+            }
 
-            }
-            else if(curr->children.find(c)==curr->children.end()){
-                return false;
-            }
-            else{
-                curr=curr->children[c];
-            }
-            index++;
+            return false;
         }
-        
-        return curr->isWord;
 
+        int childIndex = c - 'a';
+
+        if (curr->children[childIndex] == nullptr) {
+            return false;
+        }
+
+        return searchHelper(
+            word,
+            index + 1,
+            curr->children[childIndex]
+        );
     }
 
     bool search(string word) {
-        return searchHelper(word, root);
+        return searchHelper(word, 0, root);
     }
 };
 
