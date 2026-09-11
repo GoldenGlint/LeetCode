@@ -13,13 +13,16 @@ class Solution {
 public:
 struct compare{
     bool operator()(pair<int, int>&a, pair<int, int> &b){
-        return (pow(a.first, 2)+pow(a.second, 2))>(pow(b.first, 2)+pow(b.second, 2));
+        return (pow(a.first, 2)+pow(a.second, 2))<(pow(b.first, 2)+pow(b.second, 2));
     }
 };
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
         priority_queue<pair<int, int>, vector<pair<int, int>>, compare> pq;
         for(int i=0; i<points.size(); i++){
             pq.push({points[i][0], points[i][1]});
+            if(pq.size()>k){
+                pq.pop();
+            }
         }
         vector<vector<int>> ans;
         for(int i=0; i<k; i++){
