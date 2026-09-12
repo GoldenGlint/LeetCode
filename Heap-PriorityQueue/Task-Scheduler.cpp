@@ -26,33 +26,36 @@ struct compare{
         for(int i=0; i<tasks.size(); i++){
             freq[tasks[i]]++;
         }
-        priority_queue<pair<char, int>, vector<pair<char, int>>, compare> pq;
-        queue<pair<pair<char,int>, int>> cooldown;
-        for(auto it=freq.begin(); it!=freq.end(); it++){
-            pq.push({it->first, it->second});
-        }
         
-        int ans=0;
+        priority_queue<int> pq;
+        queue<pair<int, int>> cooldown;
 
-        while(!pq.empty()||!cooldown.empty()){
-            if(!cooldown.empty() && cooldown.front().second<=ans){
+        int time=0; 
+        
+        for(auto [task, count] : freq){
+            pq.push(count);
+        }
+
+        while(!pq.empty() || !cooldown.empty()){
+            if(pq.empty()){
+                time=cooldown.front().second;
+            }
+            if(!cooldown.empty()&&cooldown.front().second<=time){
                 pq.push(cooldown.front().first);
                 cooldown.pop();
             }
             if(!pq.empty()){
-                pair<char, int> temp=pq.top();
-                cout<<temp.first<<" "<<temp.second<<endl;
+                int count=pq.top();
                 pq.pop();
-                if(temp.second-1!=0){
-                cooldown.push({{temp.first, temp.second-1}, ans+n+1});
+                count--;
+                if(count>0){
+                    cooldown.push({count, time+n+1});
+                }
             }
-            }
-
-            ans++;
-            
-            
+            time++;
         }
-        return ans;
+
+        return time;
     }
 };
 
