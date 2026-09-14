@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+#include <algorithm>
+#include <queue>
+#include <cassert>
+using namespace std;
+
+void backtrack(int target, vector<int> &nums, vector<int> &current, vector<vector<int>> &ans, int sum, int start){
+    if(sum>target){
+        return;
+    }
+    else if(sum==target){
+        ans.push_back(current);
+    }
+    else{
+        for(int i=start; i<nums.size(); i++){
+            current.push_back(nums[i]);
+            sum+=nums[i];
+            backtrack(target, nums, current, ans, sum, i);
+            sum-=nums[i];
+            current.pop_back();
+        }
+    }
+
+
+};
+
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> current;
+        backtrack(target, candidates, current, ans, 0, 0);
+        return ans;
+        
+    }
+};
+
+int main() {
+    Solution sol;
+
+    vector<int> candidates={2,3,6,7};
+    int target=7;
+    
+    vector<vector<int>> ans=sol.combinationSum(candidates, target);
+    cout<<"[";
+    for(auto v:ans){
+        cout<<"[";
+        for(int i=0; i<v.size(); i++){
+            if(i==v.size()-1){
+                cout<<v[i];
+            }
+            else{
+                cout<<v[i]<<",";
+            }
+        }
+        cout<<"]";
+    }
+    cout<<"]";
+}
