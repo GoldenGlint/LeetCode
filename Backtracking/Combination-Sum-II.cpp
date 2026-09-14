@@ -13,6 +13,7 @@ void backtrack(int target, vector<int> &nums, vector<int> &current, vector<vecto
     }
     else if(sum==target){
         ans.push_back(current);
+        return;
     }
     else{
         for(int i=start; i<nums.size(); i++){
