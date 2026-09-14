@@ -8,18 +8,15 @@
 #include <cassert>
 using namespace std;
 
-void backtrack(vector<int> &past, vector<int> &current, vector<vector<int>> &ans){
-    if(current.empty()){
-        ans.push_back(past);
-        return;
+void backtrack(int start, vector<int> &nums, vector<vector<int>> &ans){
+    if(start==nums.size()){
+        ans.push_back(nums);
     }
-    for(int i=0; i<current.size(); i++){
-        past.push_back(current[i]);
-        int temp=current[i];
-        current.erase(current.begin()+i);
-        backtrack(past, current, ans);
-        current.insert(current.begin()+i, temp);
-        past.pop_back();
+    for(int i=start; i<nums.size(); i++){
+        swap(nums[start], nums[i]);
+        backtrack(start+1, nums, ans);
+        swap(nums[start], nums[i]);
+
     }
 
 };
@@ -28,9 +25,8 @@ class Solution {
 public:
     vector<vector<int>> permute(vector<int>& nums) {
         vector<vector<int>> ans;
-        vector<int> current=nums;
-        vector<int> past;
-        backtrack(past, current, ans);
+        
+        backtrack(0, nums, ans);
         return ans;
     }
 };
