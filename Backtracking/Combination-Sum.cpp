@@ -18,6 +18,11 @@ void backtrack(int target, vector<int> &nums, vector<int> &current, vector<vecto
         for(int i=start; i<nums.size(); i++){
             current.push_back(nums[i]);
             sum+=nums[i];
+            if(sum>target){
+                sum-=nums[i];
+                current.pop_back();
+                break;
+            }
             backtrack(target, nums, current, ans, sum, i);
             sum-=nums[i];
             current.pop_back();
@@ -32,6 +37,7 @@ public:
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         vector<vector<int>> ans;
         vector<int> current;
+        sort(candidates.begin(), candidates.end());
         backtrack(target, candidates, current, ans, 0, 0);
         return ans;
         
