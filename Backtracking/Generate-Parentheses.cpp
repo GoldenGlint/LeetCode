@@ -7,45 +7,38 @@
 #include <cassert>
 using namespace std;
 
-void backtrack(string &forward, string &backward, string &curr, vector<string> &ans, int n){
+void backtrack(int open, int close,vector<string> &ans, int n, string &curr){
     
-    if(curr.size()==n*2){
+    if(curr.length()==n*2){
         ans.push_back(curr);
         return;
     }
 
-    if(!forward.empty()){
-        forward=forward.substr(0, forward.size()-1);
+    if(open>0){
         curr+="(";
-        backtrack(forward, backward, curr, ans, n);
-        forward+="(";
+        open--;
+        backtrack(open, close, ans, n, curr);
+        open++;
+        curr=curr.substr(0, curr.size()-1);
+    }
+    if(close>0 && open<close){
+        curr+=")";
+        close--;
+        backtrack(open, close, ans, n, curr);
+        close++;
         curr=curr.substr(0, curr.size()-1);
     }
 
-    if(!backward.empty()&&backward.size()>forward.size()){
-        backward=backward.substr(0, backward.size()-1);
-        curr+=")";
-        backtrack(forward, backward, curr, ans, n);
-        backward+=")";
-        curr=curr.substr(0, curr.size()-1);
-    }
-    
 };
 
 class Solution {
 public:
     vector<string> generateParenthesis(int n) {
         vector<string> ans;
-        string forward="";
-        string backward="";
-        string current="";
-        for(int i=0; i<n; i++){
-            forward+="(";
-        }
-        for(int i=0; i<n; i++){
-            backward+=")";
-        }
-        backtrack(forward, backward, current, ans, n);
+        int open=n;
+        int close=n;
+        string curr="";
+        backtrack(open, close, ans, n, curr);
         return ans;
     }
 };
