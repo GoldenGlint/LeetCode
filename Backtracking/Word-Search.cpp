@@ -11,62 +11,50 @@ using namespace std;
 void backtrack(vector<vector<bool>>& visited,
                vector<vector<char>>& board,
                bool& ans,
-               string curr,
+               int index,
                string word,
                int row,
                int col) {
-
-    if (curr == word) {
+    if(word[index]!=board[row][col]){
+        return;
+    }
+    if (index == word.size()-1) {
         ans = true;
         return;
     }
 
-    if (curr.length() >= word.length()) {
+    if (index >= word.length()) {
         return;
     }
 
     // down
     if (row + 1 < board.size() && !visited[row + 1][col]) {
         visited[row + 1][col] = true;
-        curr += board[row + 1][col];
-
-        backtrack(visited, board, ans, curr, word, row + 1, col);
-
+        backtrack(visited, board, ans, index+1, word, row + 1, col);
         visited[row + 1][col] = false;
-        curr.pop_back();
+        
     }
 
     // up
     if (row - 1 >= 0 && !visited[row - 1][col]) {
         visited[row - 1][col] = true;
-        curr += board[row - 1][col];
-
-        backtrack(visited, board, ans, curr, word, row - 1, col);
-
+        backtrack(visited, board, ans, index+1, word, row - 1, col);
         visited[row - 1][col] = false;
-        curr.pop_back();
+        
     }
 
     // left
     if (col - 1 >= 0 && !visited[row][col - 1]) {
         visited[row][col - 1] = true;
-        curr += board[row][col - 1];
-
-        backtrack(visited, board, ans, curr, word, row, col - 1);
-
+        backtrack(visited, board, ans, index+1, word, row, col - 1);
         visited[row][col - 1] = false;
-        curr.pop_back();
     }
 
     // right
     if (col + 1 < board[0].size() && !visited[row][col + 1]) {
         visited[row][col + 1] = true;
-        curr += board[row][col + 1];
-
-        backtrack(visited, board, ans, curr, word, row, col + 1);
-
+        backtrack(visited, board, ans, index+1, word, row, col + 1);
         visited[row][col + 1] = false;
-        curr.pop_back();
     }
 }
 
@@ -88,14 +76,11 @@ public:
 
             visited[row][col] = true;
 
-            string current = "";
-            current += board[row][col];
-
             backtrack(
                 visited,
                 board,
                 ans,
-                current,
+                0,
                 word,
                 row,
                 col
