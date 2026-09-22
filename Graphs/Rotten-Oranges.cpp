@@ -17,13 +17,11 @@ public:
         int r=grid.size();
         int c=grid[0].size();
         int notRotten=0;
-        vector<vector<bool>> visited(r, vector<bool>(c, false));
         queue<pair<int, int>> q;
         for(int i=0; i<r; i++){
             for(int l=0; l<c; l++){
                 if(grid[i][l]==2){
                     q.push({i, l});
-                    visited[i][l]=true;
                 }
                 else if(grid[i][l]==1){
                     notRotten++;
@@ -49,7 +47,7 @@ public:
                         grid[t.first][t.second]=2;
                         notRotten--;
                         q.push(t);
-                        visited[t.first][t.second]=true;
+                        
                     }
                 }
             }
