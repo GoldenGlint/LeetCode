@@ -11,44 +11,40 @@
 using namespace std;
 
 
+
+
 class Solution {
 public:
-    int maxAreaOfIsland(vector<vector<int>>& grid) {
-        int k=grid.size();
-        int n=grid[0].size();
-        int maxArea=0;
-        vector<vector<bool>> visited(k, vector<bool>(n, false));
-        for(int i=0; i<grid.size(); i++){
-            for(int l=0; l<grid[0].size(); l++){
-                queue<pair<int, int>> q;
-                int size=0;
-                if(!visited[i][l]&&grid[i][l]==1){
-                    q.push({i,l});
-                    visited[i][l]=true;
-                    size++;
-                    vector<pair<int, int>> d={{0,1}, {1,0}, {0,-1}, {-1, 0}};
-                    while(!q.empty()){
-                        pair<int, int> t=q.front();
-                        cout<<t.first<<" "<<t.second<<endl;
-                        
-                        
-                        q.pop();
-                        for(auto p: d){
-                            pair<int, int> temp;
-                            temp.first=t.first+p.first;
-                            temp.second=t.second+p.second;
-                            if(temp.first>=0 && temp.first<grid.size()&&temp.second>=0&&temp.second<grid[0].size()&&!visited[temp.first][temp.second]&&grid[temp.first][temp.second]==1){
-                                q.push(temp);
-                                size++;
-                                visited[temp.first][temp.second]=true;
-                            }
-                        }
-                    }
-                }
-                maxArea=max(maxArea, size);
+    int ans=0;
+    vector<pair<int, int>> dir={{1,0}, {0,1}, {-1,0}, {0,-1}};
+    void dfs(int &area, vector<vector<bool>> &visited, pair<int, int> curr, int r, int c, vector<vector<int>>& grid){
+        ans=max(ans, area);
+        visited[curr.first][curr.second]=true;
+        for(auto d: dir){
+            pair<int, int> temp=curr;
+            temp.first=curr.first+d.first;
+            temp.second=curr.second+d.second;
+            if(temp.first>=0&&temp.first<r&&temp.second>=0&&temp.second<c&&!visited[temp.first][temp.second]&&grid[temp.first][temp.second]==1){
+                area++;
+                dfs(area, visited, temp, r, c, grid);
             }
         }
-        return maxArea;
+    };
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int r=grid.size();
+        int c=grid[0].size();
+        vector<vector<bool>> visited(r, vector<bool>(c, false));
+        for(int i=0; i<r; i++){
+            for(int l=0; l<c; l++){
+                if(!visited[i][l]&&grid[i][l]==1){
+                    int a=1;
+                    dfs(a, visited, {i,l}, r, c, grid);
+                }
+            }
+        }
+
+        return ans;
+
     }
 };
 
@@ -67,7 +63,7 @@ int main(){
     vector<vector<int>> grid1={
         {1,1,0,0,0},{1,1,0,0,0},{0,0,0,1,1},{0,0,0,1,1}
     };
-    cout<<sol.maxAreaOfIsland(grid)<<endl;
+    //cout<<sol.maxAreaOfIsland(grid)<<endl;
     cout<<sol.maxAreaOfIsland(grid1)<<endl;
 
 }
