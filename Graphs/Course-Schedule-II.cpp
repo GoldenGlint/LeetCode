@@ -38,12 +38,6 @@ public:
         vector<int> order;
 
 
-        if(prerequisites.empty()){
-            for(int i=0; i<numCourses; i++){
-                order.push_back(i);
-            }
-            return order;
-        }
         
         unordered_map<int, vector<int>> c;
         vector<int> color(numCourses, 0);
@@ -90,7 +84,7 @@ int main() {
 
     vector<int> ans=sol.findOrder(2,preq);
     vector<int> ans1=sol.findOrder(4,preq1);
-    vector<int> ans2=sol.findOrder(1, preq3);
+    vector<int> ans2=sol.findOrder(3, preq3);
 
     printVector(ans);
     printVector(ans1);
