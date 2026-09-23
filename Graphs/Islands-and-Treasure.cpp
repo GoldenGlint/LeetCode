@@ -20,13 +20,12 @@ public:
         queue<pair<int, int>> q;
         int r=grid.size();
         int c=grid[0].size();
-        vector<vector<bool>> visited(r, vector<bool>(c, false));
+        
         int counter=0;
         for(int i=0; i<r; i++){
             for(int l=0; l<c; l++){
                 if(grid[i][l]==0){
                     q.push({i,l});
-                    visited[i][l]=true;
                 }
             }
         }
@@ -44,7 +43,8 @@ public:
                     t.second=temp.second+d.second;
                     if(t.first>=0&&t.first<r&&t.second>=0&&t.second<c&&grid[t.first][t.second]==INT_MAX&&!visited[t.first][t.second]){
                         q.push(t);
-                        visited[t.first][t.second]=true;
+                        grid[t.first][t.second]=counter+1;
+                        
                     }
                 }
             }
