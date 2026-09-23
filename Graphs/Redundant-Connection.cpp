@@ -13,35 +13,32 @@ using namespace std;
 class Solution {
 public:
     
-    bool dfs(int curr, int target, unordered_map<int, vector<int>> &adj, vector<bool> &visited){
-        visited[curr]=true;
-        if(curr==target){
-            return true;
+    int find(int node, vector<int> &parent){
+        if(parent[node]!=node){
+            parent[node]=find(parent[node], parent);
         }
-        for(auto node:adj[curr]){
-             
-            if(!visited[node]){
-                if(dfs(node, target, adj, visited)){
-                    return true;
-                }
-            }
-            
-        }
-
-        return false;
+        return parent[node];
     }
-    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
-        unordered_map<int, vector<int>> adj;
         
-        for(int i=0; i<edges.size(); i++){
-            vector<bool>visited(edges.size()+1, false);
-            if(dfs(edges[i][0], edges[i][1], adj, visited)){
-                return edges[i];
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+       vector<int> parent(edges.size()+1);
+        
+        for(int i=0 ;i<parent.size(); i++){
+            parent[i]=i;
+        }
+
+        for(auto edge: edges){
+            int u=edge[0];
+            int v=edge[1];
+
+            int parentU=find(u, parent);
+            int parentV=find(v, parent);
+
+            if(parentU==parentV){
+                return edge;
             }
 
-            adj[edges[i][0]].push_back(edges[i][1]);
-            adj[edges[i][1]].push_back(edges[i][0]);
-
+            parent[parentU]=parentV;
         }
         return {-1,-1};
     }
