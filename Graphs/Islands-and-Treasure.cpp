@@ -41,7 +41,7 @@ public:
                     pair<int, int> t;
                     t.first=temp.first+d.first;
                     t.second=temp.second+d.second;
-                    if(t.first>=0&&t.first<r&&t.second>=0&&t.second<c&&grid[t.first][t.second]==INT_MAX&&!visited[t.first][t.second]){
+                    if(t.first>=0&&t.first<r&&t.second>=0&&t.second<c&&grid[t.first][t.second]==INT_MAX){
                         q.push(t);
                         grid[t.first][t.second]=counter+1;
                         
