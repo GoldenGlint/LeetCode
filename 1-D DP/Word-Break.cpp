@@ -10,34 +10,18 @@ class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
         int n=s.length();
-        vector<bool>dp(n, false);
-        for(auto word:wordDict){
-            int len=word.length();
-            string temp=s.substr(0, len);
-            if(temp==word){
-                dp[len-1]=true;
-            }
-        }
-        for(int i=0; i<n; i++){
-            if(dp[i]){
-                for(auto word:wordDict){
-                    int len=word.length();
-                    if(i+1+len>n){
-                        continue;
-                    }
-                    else{
-                        string temp=s.substr(i+1, len);
-                        if(temp==word){
-                            dp[i+len]=true;
-                        }
-                    }
+        unordered_set<string> words(wordDict.begin(), wordDict.end());
+        vector<bool>dp(n+1, false);
+        dp[0]=true;
+        for(int i=1; i<=n; i++){
+            for(int j=0; j<i; j++){
+                if(dp[j]&&words.count(s.substr(j, i-j))){
+                    dp[i]=true;
+                    break;
                 }
             }
-            else{
-                continue;
-            }
         }
-        return dp[n-1];
+        return dp[n];
     }
 };
 
