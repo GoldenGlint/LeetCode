@@ -11,26 +11,26 @@ public:
     bool canPartition(vector<int>& nums) {
         int sum=0;
 
-        for(int i=0; i<nums.size(); i++){
-            sum+=nums[i];
+        for(int num: nums){
+            sum+=num;
         }
-        vector<bool> ans(sum+1, 0);
-        ans[0]=1;
-        ans[sum]=1;
+
+        if(sum%2==1){
+            return false;
+        }
+
+        vector<bool> ans(sum+1, false);
+        ans[0]=true;
+        ans[sum]=true;
         int target=sum/2;
         
-        for(auto num : nums){
-            for(int l=target; l-num>=0; l--){
+        for(int num : nums){
+            for(int l=target; l>=num; l--){
                 ans[l]=ans[l]||ans[l-num];
             }
         }
 
-        if(ans[target]&&sum%2!=1){
-            return true;
-        }
-
-        return false;
-
+        return ans[target];
 
     }
 };
