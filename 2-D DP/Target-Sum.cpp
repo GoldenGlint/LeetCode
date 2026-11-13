@@ -15,30 +15,43 @@ public:
     int findTargetSumWays(vector<int>& nums, int target) {
         int sum=0;
         int n=nums.size();
+
         for(int i=0; i<n; i++){
             sum+=nums[i];
         }
-        int size=2*sum+1;
-        vector<vector<int>> dp(n+1, vector<int>(size, 0));
-
-        dp[0][sum]=1;
-
-        for(int i=1; i<=n; i++){
-            for(int l=0; l<size; l++){
-                if(l+nums[i-1]<size){
-                    dp[i][l]+=dp[i-1][l+nums[i-1]];
-                }
-                if(l-nums[i-1]>=0){
-                    dp[i][l]+=dp[i-1][l-nums[i-1]];
-                }
-            }
-        }
+        
+        int size=2*sum+1; //3, -3 -2 -1 0 1 2 3
 
         if(sum+target<0||sum+target>=size){
             return 0;
         }
+        
 
-        return dp[n][sum+target];
+        vector<int> dp(size, 0);
+
+        dp[sum]=1;
+
+        for(int i=1; i<=n; i++){
+            vector<int> copy=dp;
+            for(int l=0; l<size; l++){
+                dp[l]=0;
+                if(l+nums[i-1]<size){
+                    dp[l]+=copy[l+nums[i-1]];
+                }
+                if(l-nums[i-1]>=0){
+                    dp[l]+=copy[l-nums[i-1]];
+                }
+            }
+            
+            
+        }
+        
+
+        
+
+        return dp[sum+target];
+
+        
 
     }
 };
