@@ -15,18 +15,16 @@ public:
         int n=s.length();
         int f=t.length();
 
-        vector<vector<int>> dp(n+1, vector<int>(f+1, 0));
-        dp[0][0]=1;
-        for(int l=0; l<=n; l++){
-            dp[l][0]=1;
-        }
+        vector<int> dp(f+1, 0);
+        dp[0]=1;
+        
         for(int i=1; i<=n; i++){
-            for(int l=1; l<=f; l++){
-                long long res=dp[i-1][l];
-                if(l-1<=f && s[i-1]==t[l-1]){
-                    res+=dp[i-1][l-1];
+            for(int l=f; l>=0; l--){
+                long long res=dp[l];
+                if(l-1>=0&&s[i-1]==t[l-1]){
+                    res+=dp[l-1];
                 }
-                dp[i][l]=(int)min((long long)INT_MAX, res);
+                dp[l]=(int)min((long long)INT_MAX, res);
             }
         }
 
@@ -37,7 +35,7 @@ public:
             cout<<endl;
         }*/
 
-        return dp[n][f];
+        return dp[f];
         
     }
 };
