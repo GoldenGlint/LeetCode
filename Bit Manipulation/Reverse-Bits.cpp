@@ -11,14 +11,12 @@ using namespace std;
 class Solution {
 public:
     int reverseBits(int n) {
-        int num=0;
+        unsigned int num=0;
+        unsigned int x=n;
         for(int i=31; i>=0; i--){//what am I doing here bro
-            int temp=1;
-            temp=temp<<i;
-            int bit=temp&n;
-            bit=bit>>i;
-            bit=bit<<(31-i);
-            num=num|bit;
+            unsigned int bit=0;
+            bit=(x>>i)&1;
+            num|=bit<<(31-i);
         }
         return num;
     }
