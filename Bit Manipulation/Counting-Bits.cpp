@@ -8,6 +8,9 @@
 #include <cassert>
 using namespace std;
 
+//0 1 10 11 100 101 110 111 1000 1001 1010 1011 1110 1111 10000
+
+
 class Solution {
 public:
     vector<int> countBits(int n) {
