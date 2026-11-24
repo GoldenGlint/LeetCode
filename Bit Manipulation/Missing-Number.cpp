@@ -12,16 +12,13 @@ class Solution {
 public:
     int missingNumber(vector<int>& nums) {
         int n=nums.size();
-        vector<int> increase;
-        for(int i=0; i<=n; i++){
-            increase.push_back(i);
-        }
+
         int ans=0;
         for(int i=0; i<n; i++){
             ans^=nums[i];
-            ans^=increase[i];
+            ans^=i;
         }
-        ans^=increase[n];
+        ans^=n;
         return ans;
     }
 };
